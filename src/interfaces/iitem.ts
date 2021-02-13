@@ -5,11 +5,11 @@ export default interface IItem
     id: string
     deleted?: boolean
     type: EItemType
-    by?: number
+    by?: string
     time?: number
     text?: string
     dead?: boolean
-    parent?: number
+    parent?: string
     poll?: any
     kids?: string[]
     url?: string

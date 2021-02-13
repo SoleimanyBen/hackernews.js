@@ -22,10 +22,23 @@ export default class User
         {
             for (let storyId in this._submitted)
             {
-                const storyData: IItem = await this._httpClient.getItem(storyId)
+                if (!this._stories.find((story: Story) => story.ID == storyId)) // Make sure story has not already been loaded
+                {
+                    const storyData: IItem = await this._httpClient.getItem(storyId)
 
-                if (this._stories)
+                    this._stories.push(new Story(storyData))
+                }
             }
         }
+    }
+
+    public get ID(): string
+    {
+        return this._id
+    }
+
+    public get Stories(): Story[]
+    {
+        return this._stories
     }
 }

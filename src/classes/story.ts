@@ -9,7 +9,6 @@ export default class Story
     private _id: string
     private _title: string
     private _description: string
-    private _comments: Comment[]
     private _kids?: string[]
     private _score: number
     private _time: Date
@@ -23,20 +22,27 @@ export default class Story
         this._description = data.text!
         this._score = data.score!
         this._time = new Date(data.time!)
-        this._comments = []
         this._kids = data.kids
     }
 
-    public async loadComments(): Promise<void>
+    public async getComments(): Promise<Comment[] | undefined>
     {
         if (this._kids)
         {
+            const commentList: Comment[] = []
+
             for (let kid in this._kids)
             {
                 const commentData: IItem = await this._httpClient.getItem(kid)
-                
-                this._comments.push(new Comment(commentData))
+
+                commentList.push(new Comment(commentData))
             }
+
+            return commentList
+        }
+        else
+        {
+            return
         }
     }
 
@@ -55,8 +61,13 @@ export default class Story
         return this._description
     }
 
-    public get Comments(): Comment[]
+    public get Score(): number
     {
-        return this._comments
+        return this._score
+    }
+
+    public get Time(): Date
+    {
+        return this._time
     }
 }
